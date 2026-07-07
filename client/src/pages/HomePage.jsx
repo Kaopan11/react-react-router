@@ -1,62 +1,47 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ProductCard from "../components/ProductCard";
 
 function HomePage() {
   const [products, setProducts] = useState([]);
-  const [isError, setIsError] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getProducts = async () => {
     try {
       setIsError(false);
       setIsLoading(true);
-      const results = await axios("http://localhost:4001/products");
+      const results = await axios.get("http://localhost:4001/products");
       setProducts(results.data.data);
-      setIsLoading(false);
     } catch (error) {
       setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getProducts();
   }, []);
-  return (
-    <div>
-      <div className="app-wrapper">
-        <h1 className="app-title">Products</h1>
-        <button>Create Product</button>
-      </div>
-      <div className="product-list">
-        {products.map((product) => {
-          return (
-            <div className="product">
-              <div className="product-preview">
-                <img
-                  src="https://via.placeholder.com/250/250"
-                  alt="some product"
-                  width="250"
-                  height="250"
-                />
-              </div>
-              <div className="product-detail">
-                <h1>Product name: {product.name} </h1>
-                <h2>Product price: {product.price}</h2>
-                <p>Product description: {product.description} </p>
-                <div className="product-actions">
-                  <button className="view-button">View</button>
-                  <button className="edit-button">Edit</button>
-                </div>
-              </div>
 
-              <button className="delete-button">x</button>
-            </div>
-          );
-        })}
-      </div>
-      {isError ? <h1>Request failed</h1> : null}
-      {isLoading ? <h1>Loading ....</h1> : null}
-    </div>
+  return (
+    <main>
+      <header className="app-wrapper">
+        <h1 className="app-title">Products</h1>
+        <button type="button">Create Product</button>
+      </header>
+
+      {isLoading && <p className="status-message">Loading ....</p>}
+      {isError && <p className="status-message">Request failed</p>}
+
+      {!isLoading && !isError && (
+        <section className="product-list" aria-label="Product list">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </section>
+      )}
+    </main>
   );
 }
 

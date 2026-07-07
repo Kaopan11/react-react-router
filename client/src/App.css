@@ -55,8 +55,19 @@ body {
   justify-content: space-between;
 }
 
+.product .product-detail .product-price {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
 .product .product-detail .product-actions {
   display: flex;
+}
+
+.status-message {
+  font-size: 30px;
+  color: var(--primary-color);
+  text-align: center;
 }
 
 .product .product-preview {
