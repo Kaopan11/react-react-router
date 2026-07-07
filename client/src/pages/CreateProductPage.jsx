@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
 import CreateProductForm from "../components/CreateProductForm";
 
 function CreateProductPage() {
   return (
-    <div>
+    <main>
       <h1>Create Product Page</h1>
       <CreateProductForm />
-      <button>Back to Home</button>
-    </div>
+      <Link to="/">
+        <button type="button">Back to Home</button>
+      </Link>
+    </main>
   );
 }
 

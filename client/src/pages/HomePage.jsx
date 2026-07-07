@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 
@@ -20,6 +21,15 @@ function HomePage() {
     }
   };
 
+  const handleDelete = async (productId) => {
+    try {
+      await axios.delete(`http://localhost:4001/products/${productId}`);
+      setProducts(products.filter((product) => product.id !== productId));
+    } catch (error) {
+      setIsError(true);
+    }
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -28,7 +38,9 @@ function HomePage() {
     <main>
       <header className="app-wrapper">
         <h1 className="app-title">Products</h1>
-        <button type="button">Create Product</button>
+        <Link to="/product/create">
+          <button type="button">Create Product</button>
+        </Link>
       </header>
 
       {isLoading && <p className="status-message">Loading ....</p>}
@@ -37,7 +49,11 @@ function HomePage() {
       {!isLoading && !isError && (
         <section className="product-list" aria-label="Product list">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onDelete={handleDelete}
+            />
           ))}
         </section>
       )}

@@ -1,4 +1,6 @@
-function ProductCard({ product }) {
+import { Link } from "react-router-dom";
+
+function ProductCard({ product, onDelete }) {
   return (
     <article className="product">
       <div className="product-preview">
@@ -14,15 +16,24 @@ function ProductCard({ product }) {
         <p className="product-price">Product price: {product.price}</p>
         <p>Product description: {product.description}</p>
         <div className="product-actions">
-          <button type="button" className="view-button">
-            View
-          </button>
-          <button type="button" className="edit-button">
-            Edit
-          </button>
+          <Link to={`/product/view/${product.id}`}>
+            <button type="button" className="view-button">
+              View
+            </button>
+          </Link>
+          <Link to={`/product/edit/${product.id}`}>
+            <button type="button" className="edit-button">
+              Edit
+            </button>
+          </Link>
         </div>
       </div>
-      <button type="button" className="delete-button" aria-label="Delete product">
+      <button
+        type="button"
+        className="delete-button"
+        aria-label="Delete product"
+        onClick={() => onDelete(product.id)}
+      >
         x
       </button>
     </article>
